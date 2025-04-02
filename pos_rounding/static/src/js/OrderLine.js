@@ -9,18 +9,8 @@ patch(Orderline.prototype, {
      get_price_with_tax() {
         let price_subtotal_incl =  super.get_price_with_tax(...arguments);
         let sign = Math.sign(price_subtotal_incl);
-        if (this.pos.config.rounding) {
-            if (this.pos.config.rounding_type == 'rounding_up'){
-                let round_factor = this.pos.config.rounding_factor;
-                price_subtotal_incl = sign * (Math.ceil(Math.abs(price_subtotal_incl) / round_factor) * round_factor);
-            } else if(this.pos.config.rounding_type == 'rounding_down'){
-                let round_factor = this.pos.config.rounding_factor;
-                price_subtotal_incl = sign * (Math.floor(Math.abs(price_subtotal_incl) / round_factor) * round_factor);
-            } else{
-                let round_factor = this.pos.config.rounding_factor;
-                price_subtotal_incl = round_pr(price_subtotal_incl, round_factor);
-            }
-        }
+        let round_factor = this.pos.config.rounding_factor;
+        price_subtotal_incl = sign * (Math.ceil(Math.abs(price_subtotal_incl) / round_factor) * round_factor);
         return price_subtotal_incl;
      },
 
@@ -39,6 +29,7 @@ patch(Orderline.prototype, {
                 price_subtotal = round_pr(price_subtotal, round_factor);
             }
         }
+        // console.log('=========================: B', price_subtotal)
         return price_subtotal;
      },
 
@@ -61,6 +52,7 @@ patch(Orderline.prototype, {
                 all_prices['priceWithoutTax'] = round_pr(all_prices['priceWithoutTax'], round_factor);
              }
          }
+         // console.log('=========================: C', all_prices)
          return all_prices
      }
 })
